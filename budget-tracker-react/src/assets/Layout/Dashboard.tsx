@@ -3,17 +3,24 @@ import { useEffect, useState } from "react";
 import { getUserBalance } from '../../API/PersonApi.tsx';
 import { getTotalExpense } from '../../API/PersonApi.tsx';
 import { getTotalIncome } from '../../API/PersonApi.tsx';
+import { getBankBalance } from '../../API/PersonApi.tsx';
+import { getCashBalance } from '../../API/PersonApi.tsx';
 
 function Dashboard(){
     const [balance, setBalance] = useState<number | null>(null);
     const [totalExpense, setTotalExpense] = useState<number | null>(null);
     const [totalIncome, setTotalIncome] = useState<number | null>(null);
+    const [bankBalance, setBankBalance] = useState<number | null>(null);
+    const [cashBalance, setCashBalance] = useState<number | null>(null);
 
     useEffect(() => {
         const userId = 1; // dummy user Id
         getUserBalance(userId).then(setBalance).catch(console.error);
         getTotalExpense(userId).then(setTotalExpense).catch(console.error);
         getTotalIncome(userId).then(setTotalIncome).catch(console.error);
+        getBankBalance(userId).then(setBankBalance).catch(console.error);
+        getCashBalance(userId).then(setCashBalance).catch(console.error);
+
     }, []);
 
 
@@ -42,11 +49,11 @@ function Dashboard(){
                     <h3>Account summary</h3>
                     <div className={styles.card}>
                     <h3>CASH</h3>
-                    <p className={styles.balance}>$0</p>
+                    <p className={styles.balance}>${cashBalance}</p>
                     </div>
                     <div className={styles.card}>
                     <h3>BANK</h3>
-                    <p className={styles.balance}>$0</p>
+                    <p className={styles.balance}>${bankBalance}</p>
                     </div>
                 </div>
             </section>

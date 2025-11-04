@@ -12,6 +12,14 @@ export interface IncomeResponse {
     totalIncome: number;
 }
 
+export interface BankBalanceResponse {
+    bankBalance: number;
+}
+
+export interface BankCashResponse {
+    cashBalance: number;
+}
+
 const api = ky.create({
     prefixUrl: 'http://localhost:8080/api/person',
     timeout: 5000,
@@ -49,4 +57,24 @@ export async function getTotalIncome(userId: number): Promise<number> {
     } catch (error) {
         throw new Error(`Failed to fetch user income: ${error}`);
     }   
+}
+
+export async function getBankBalance(userId: number): Promise<number> {
+    try {
+        const response = await api.get(`${userId}/balance/bank`);
+        const data: number = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error(`Failed to fetch bank balance: ${error}`);
+    }
+}
+
+export async function getCashBalance(userId: number): Promise<number> {
+    try {
+        const response = await api.get(`${userId}/balance/cash`);
+        const data: number = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error(`Failed to fetch bank balance: ${error}`);
+    }
 }
