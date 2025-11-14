@@ -1,16 +1,39 @@
-.navbar{
+.navbar {
     background-color: #0a0a0a;
-    display: flex;
-    justify-content: space-between;
     padding: 20px;
     box-sizing: border-box;
     border-bottom: 1px solid #ffffff2d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.text{
+.mainText {
     color: #e5e5e5;
-    display: flex;
-    align-items: center; 
-    margin-left: 10px;
+    font-size: 24px;
+    margin: 0;
+    position: absolute; 
+    left: 30px;
 }
+
+.navList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 30px;
+    margin: 0px auto;
+}
+
+
+
+ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+
+
+
 

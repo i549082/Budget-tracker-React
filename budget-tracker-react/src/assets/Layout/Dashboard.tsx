@@ -30,7 +30,7 @@ function Dashboard(){
                 <h1>Dashboard</h1>
             </header>
             
-            <section className={styles.section}>
+            <section>
                 <div className={styles.card}>
                     <h3>Current Balance</h3>
                     <p className={styles.balance}>${balance}</p>
