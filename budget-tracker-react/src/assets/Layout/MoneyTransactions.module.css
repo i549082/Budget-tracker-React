@@ -5,6 +5,7 @@
 }
 
 
+
 .header {
     background-color: #181818;
     text-align: center;
@@ -13,7 +14,7 @@
     display: flex;
     justify-content: center;
     max-width: 400px;
-    margin: 50px  auto;
+    margin: 24px  auto;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0px 0px 10px rgb(163, 147, 147);
     transition: border-color 0.2s ease;
@@ -59,4 +60,88 @@
     margin: 10px auto;
     text-align: right;
     justify-content: right;
+}
+
+.dropDown{
+    background-color: #181818;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 16px;
+    transition: background-color 0.4s ease;
+}
+
+.dropDown:hover{
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.inputFieldTransaction{
+    background-color: #181818;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.4s ease;
+}
+
+.inputFieldTransaction:hover{
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.textArea{
+    width: 100%;
+    padding: 12px 20px;
+    resize: none; 
+    height: 100px;
+    color: #ffffff;
+    padding: 12px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: #181818;
+    transition: background-color 0.4s ease;
+}
+
+.textArea:hover{
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.addButton{
+    background-color: #0a0a0a;
+    color: #ffffff;
+    padding: 18px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    font-size: 16px;
+    width: 50%;
+    margin: auto;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    box-shadow: 0px 0px 1px rgb(163, 147, 147);
+}
+
+.addButton:hover{
+    background-color: #040404;
+}
+
+.errorMessage {
+    color: #ff4d4d;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.successMessage {
+    color: #4BB543;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

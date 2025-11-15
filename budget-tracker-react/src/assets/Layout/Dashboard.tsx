@@ -14,7 +14,7 @@ function Dashboard(){
     const [cashBalance, setCashBalance] = useState<number | null>(null);
 
     useEffect(() => {
-        const userId = 2; // dummy user Id
+        const userId = 1; // dummy user Id
         getUserBalance(userId).then(setBalance).catch(console.error);
         getTotalExpense(userId).then(setTotalExpense).catch(console.error);
         getTotalIncome(userId).then(setTotalIncome).catch(console.error);
