@@ -33,7 +33,7 @@ function Dashboard(){
             <section>
                 <div className={styles.card}>
                     <h3>Current Balance</h3>
-                    <p className={styles.balance}>${balance}</p>
+                    <p className={styles.balance}>$ {balance}</p>
                 </div>
                 
                 <div className={styles.card}>

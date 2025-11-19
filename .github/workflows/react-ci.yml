@@ -22,15 +22,20 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+          cache-dependency-path: './budget-tracker-react/package-lock.json'
           
       - name: Install dependencies
+        working-directory: ./budget-tracker-react  
         run: npm ci
 
       - name: Check data type
+        working-directory: ./budget-tracker-react  
         run: npx tsc --noEmit
 
       - name: Run tests (if any exist)
+        working-directory: ./budget-tracker-react 
         run: npm test --if-present
 
       - name: Build project
+        working-directory: ./budget-tracker-react  
         run: npm run build
