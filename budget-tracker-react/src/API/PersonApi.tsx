@@ -1,4 +1,5 @@
 import ky from "ky";
+import { getToken } from "../Auth/authUtility";   
 
 export interface BalanceResponse {
     balance: number;
@@ -27,6 +28,16 @@ const api = ky.create({
     headers: {
         'Content-Type': 'application/json',
     },
+     hooks: {
+    beforeRequest: [
+      request => {
+        const token = getToken();
+        if (token) {
+          request.headers.set("Authorization", `Bearer ${token}`);
+        }
+    }
+    ]
+}
 });
 
 export async function getUserBalance(userId: number): Promise<number> {

@@ -5,6 +5,7 @@ import { getTotalExpense } from '../../API/PersonApi.tsx';
 import { getTotalIncome } from '../../API/PersonApi.tsx';
 import { getBankBalance } from '../../API/PersonApi.tsx';
 import { getCashBalance } from '../../API/PersonApi.tsx';
+import { decodeToken } from '../../Auth/authUtility.tsx';
 
 function Dashboard(){
     const [balance, setBalance] = useState<number | null>(null);
@@ -14,7 +15,9 @@ function Dashboard(){
     const [cashBalance, setCashBalance] = useState<number | null>(null);
 
     useEffect(() => {
-        const userId = 1; // dummy user Id
+        const user = decodeToken();
+        if (!user) return;
+        const userId = user.userId;
         getUserBalance(userId).then(setBalance).catch(console.error);
         getTotalExpense(userId).then(setTotalExpense).catch(console.error);
         getTotalIncome(userId).then(setTotalIncome).catch(console.error);
