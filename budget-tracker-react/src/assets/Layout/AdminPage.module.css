@@ -1,0 +1,100 @@
+.admin {
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.header {
+    background-color: #181818;
+    text-align: center;
+    padding: 20px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    max-width: 400px;
+    margin: 24px auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 0px 10px rgb(163, 147, 147);
+    transition: border-color 0.2s ease;
+}
+
+.header:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header h1 {
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.panel {
+    background-color: #181818;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 18px;
+    transition: border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panel:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.panelTitle {
+    color: #bbbbbb;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 0;
+}
+
+.tableWrap {
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden; 
+}
+
+.scrollArea {
+    max-height: 520px; 
+    overflow: auto;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #ffffff;
+    font-size: 12px;
+    table-layout: fixed;
+}
+
+.table th, .table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    background-color: #222222;
+    z-index: 1;
+    color: #e5e5e5;
+    font-weight: 600;
+}
+
+.table tr:hover td {
+    background-color: #1f1f1f;
+}
+
+
+

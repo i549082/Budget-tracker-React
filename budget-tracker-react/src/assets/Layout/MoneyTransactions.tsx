@@ -1,61 +1,74 @@
 import styles from './MoneyTransactions.module.css'
 import { useState } from "react";
 import { createTransaction, type CreateTransactionRequest, type CreateTransactionResponse  } from'../../API/MoneyTransactionApi.tsx';
+import { decodeToken } from '../../Auth/authUtility.tsx';
 
 function MoneyTransactions(){
+    const user = decodeToken();
+    if (!user) return;
+    const userId = user.userId;
+
     const [transactionType, setTransactionType] = useState<string>('INCOME');
     const [accountType, setAccountType] = useState<string>('BANK');
-    const [amount, setAmount] = useState<number>(1);
+    const [amount, setAmount] = useState<string>("");
     const [description, setDescription] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [successMessage, setSuccessMessage] = useState<string>(''); 
 
     
 
-    const handleTransactionAmount = (value : number) => {
-        if (value < 1) {
-            setAmount(1);
-        }
-        else if (value > 999999) {
-            return;
-        }
-        else {
-            setAmount(value);
-        }
-    }
+    // const handleTransactionAmount = (value : number) => {
+    //     if (value < 1) {
+    //         setAmount(0);
+    //     }
+    //     else if (value > 999999) {
+    //         return;
+    //     }
+    //     else {
+    //         setAmount(value);
+    //     }
+    // }
 
     const handleSubmit = async () => {
         setErrorMessage('');
         setSuccessMessage('');
 
-        if (description.trim().length < 3 ) {
-            setErrorMessage('Description must be at least 3 characters long.');
+        const numericAmount = Number(amount);
+
+        if (!amount || isNaN(numericAmount)) {
+            setErrorMessage("Amount is required.");
             return;
         }
 
-           if (amount < 1 || amount > 999999) {
+        if (numericAmount < 1 || numericAmount > 999999) {
             setErrorMessage("Amount must be between 1 and 999999.");
             return;
         }
 
-        try { 
+        if (description.trim().length < 3) {
+            setErrorMessage('Description must be at least 3 characters long.');
+            return;
+        }
+
+        try {
             const transactionData: CreateTransactionRequest = {
-                userId: 1, // Dummy user ID
-                accountType: accountType.toUpperCase(),
-                transactionType: transactionType.toUpperCase(),
-                description: description,
-                amount: amount,
+            userId,
+            accountType: accountType.toUpperCase(),
+            transactionType: transactionType.toUpperCase(),
+            description,
+            amount: numericAmount, // 👈 convert here
             };
 
-            const response: CreateTransactionResponse = await createTransaction(transactionData);
-            
-            setSuccessMessage("Transaction added successfully "+ `with ID: ${response.id}`);
+            const response = await createTransaction(transactionData);
+
+            setSuccessMessage(`Transaction added successfully with ID: ${response.id}`);
             setDescription('');
-            setAmount(1);
+            setAmount('');
         } catch (error) {
-            setErrorMessage(`Failed to add transaction: ${error}`);
+            setErrorMessage(`Failed to add transaction`);
         }
     };
+
 
 
     return(
@@ -93,7 +106,7 @@ function MoneyTransactions(){
                     <input 
                         required type="number"
                         placeholder="Enter amount"
-                        onChange={(e) => handleTransactionAmount(Number(e.target.value))}  
+                        onChange={(e) => setAmount(e.target.value)}  
                         min="1"  
                         max="999999"
                         value={amount}  

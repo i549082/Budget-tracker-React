@@ -1,11 +1,5 @@
 import { jwtDecode } from "jwt-decode";
 
-// Note: this does not validate the signature, it just extracts the JSON payload from the token, which could have been tampered with.
-// https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-without-using-a-library
-// For security, always validate the token on the backend.
-// TO DO: Add this to owasp documentation
-
-
 export interface DecodedToken {
   sub: string;
   role: string;
@@ -30,8 +24,17 @@ export function decodeToken(): DecodedToken | null {
   if (!token) return null;
 
   try {
-    return jwtDecode<DecodedToken>(token);
+    const decoded = jwtDecode<DecodedToken>(token);
+    const isExpired = decoded.exp * 1000 < Date.now();
+
+    if (isExpired) {
+      localStorage.removeItem("auth_token");
+      return null;
+    }
+
+    return decoded;
   } catch {
+    localStorage.removeItem("auth_token");
     return null;
   }
 }
