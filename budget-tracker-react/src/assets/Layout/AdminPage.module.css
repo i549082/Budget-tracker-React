@@ -96,5 +96,45 @@
     background-color: #1f1f1f;
 }
 
+.search {
+    background-color: #181818;
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.search::placeholder {
+    color: #aaaaaa;
+}
+
+.search:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.roleSelect {
+    background-color: #181818;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 16px;
+    transition: background-color 0.4s ease;
+}
+
+.roleSelect:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.roleSelect option {
+    background-color: #181818;
+    color: #ffffff;
+}
+
+
+
 
 

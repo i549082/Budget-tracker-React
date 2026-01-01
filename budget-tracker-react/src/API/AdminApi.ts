@@ -42,3 +42,12 @@ export async function fetchAllUsers(): Promise<AdminUser[]> {
 export async function fetchAllTransactions(): Promise<AdminTransaction[]> {
   return api.get("transactions").json<AdminTransaction[]>();
 }
+
+export async function updateUserRole(
+  userId: number,
+  role: "USER" | "ADMIN"
+): Promise<void> {
+  await api.put(`users/${userId}/role`, {
+    searchParams: { role }
+  });
+}

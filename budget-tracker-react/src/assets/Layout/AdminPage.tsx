@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./AdminPage.module.css";
-import { fetchAllUsers, fetchAllTransactions } from "../../API/AdminApi";
+import { fetchAllUsers, fetchAllTransactions, updateUserRole } from "../../API/AdminApi";
+import { decodeToken } from "../../Auth/authUtility.tsx";
 
 interface UserRow {
   id: number;
@@ -24,6 +25,13 @@ interface TransactionRow {
 function AdminPage() {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [transactions, setTransactions] = useState<TransactionRow[]>([]);
+  const [userSearch, setUserSearch] = useState("");
+  const [transactionSearch, setTransactionSearch] = useState("");
+
+  const currentUser = decodeToken();
+  const currentAdminId = currentUser?.userId;
+
+
 
 
   useEffect(() => {
@@ -43,6 +51,15 @@ function AdminPage() {
   }).format(new Date(dateString));
 }
 
+    const filteredUsers = users.filter((u) =>
+      u.username.toLowerCase().includes(userSearch.toLowerCase()) ||
+      u.id.toString().includes(userSearch)
+    );
+
+    const filteredTransactions = transactions.filter((t) =>
+      t.username.toLowerCase().includes(transactionSearch.toLowerCase()) ||
+      t.id.toString().includes(transactionSearch)
+    );
 
   return (
     <div className={styles.admin}>
@@ -55,7 +72,13 @@ function AdminPage() {
         {/* USERS TABLE */}
         <section className={styles.panel}>
           <h2 className={styles.panelTitle}>Users</h2>
-
+          <input
+            type="text"
+            placeholder="Search by ID or username..."
+            value={userSearch}
+            onChange={(e) => setUserSearch(e.target.value)}
+            className={styles.search}
+          />
           <div className={styles.tableWrap}>
             <div className={styles.scrollArea}>
               <table className={styles.table}>
@@ -68,12 +91,29 @@ function AdminPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((u) => (
-                    <tr key={u.id}>
-                      <td>{u.id}</td>
-                      <td>{u.username}</td>
-                      <td>{u.email}</td>
-                      <td>{u.role}</td>
+                  {filteredUsers.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>{user.username}</td>
+                      <td>{user.email}</td>
+                      <td>
+                      {user.id === currentAdminId ? (
+                        <span>{user.role} (You)</span>
+                      ) : (
+                        <select
+                          value={user.role}
+                          className={styles.roleSelect}
+                          onChange={async (e) => {
+                            const newRole = e.target.value as "USER" | "ADMIN";
+                            await updateUserRole(user.id, newRole);
+                            fetchAllUsers().then(setUsers);
+                          }}
+                        >
+                          <option value="USER">USER</option>
+                          <option value="ADMIN">ADMIN</option>
+                        </select>
+                      )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -85,7 +125,13 @@ function AdminPage() {
         {/* TRANSACTIONS TABLE */}
         <section className={styles.panel}>
           <h2 className={styles.panelTitle}>Transactions</h2>
-
+          <input
+            type="text"
+            placeholder="Search by transaction ID or username..."
+            value={transactionSearch}
+            onChange={(e) => setTransactionSearch(e.target.value)}
+            className={styles.search}
+          />
           <div className={styles.tableWrap}>
             <div className={styles.scrollArea}>
               <table className={styles.table}>
@@ -103,16 +149,16 @@ function AdminPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((t) => (
-                    <tr key={t.id}>
-                      <td>{t.id}</td>
-                      <td >{t.username}</td>
-                      <td>{t.email}</td>
-                      <td>{t.transactionType}</td>
-                      <td>{t.accountType}</td>
-                      <td>${t.amount}</td>
-                      <td>{t.description}</td>
-                      <td>{formatDate(t.dateCreated)}</td>
+                  {filteredTransactions.map((transaction) => (
+                    <tr key={transaction.id}>
+                      <td>{transaction.id}</td>
+                      <td >{transaction.username}</td>
+                      <td>{transaction.email}</td>
+                      <td>{transaction.transactionType}</td>
+                      <td>{transaction.accountType}</td>
+                      <td>${transaction.amount}</td>
+                      <td>{transaction.description}</td>
+                      <td>{formatDate(transaction.dateCreated)}</td>
                     </tr>
                   ))}
                 </tbody>
