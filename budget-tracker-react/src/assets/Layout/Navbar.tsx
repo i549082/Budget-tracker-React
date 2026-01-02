@@ -32,6 +32,10 @@ function Navbar() {
                 <li>
                   <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
                 </li>
+
+                <li>
+                  <span className={styles.welcomeText}>Welcome, {user.sub}!</span>
+                </li>
               </>
             )}
 

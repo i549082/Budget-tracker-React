@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import styles from "./AdminPage.module.css";
 import { fetchAllUsers, fetchAllTransactions, updateUserRole } from "../../API/AdminApi";
 import { decodeToken } from "../../Auth/authUtility.tsx";
+import { CSVLink } from "react-csv";
+
 
 interface UserRow {
   id: number;
@@ -31,8 +33,23 @@ function AdminPage() {
   const currentUser = decodeToken();
   const currentAdminId = currentUser?.userId;
 
+  const userHeaders = [
+    { label: "ID", key: "id" },
+    { label: "Username", key: "username" },
+    { label: "Email", key: "email" },
+    { label: "Role", key: "role" }
+  ];
 
-
+  const transactionHeaders = [
+    { label: "ID", key: "id" },
+    { label: "Username", key: "username" },
+    { label: "Email", key: "email" },
+    { label: "Type", key: "transactionType" },
+    { label: "Account", key: "accountType" },
+    { label: "Amount", key: "amount" },
+    { label: "Description", key: "description" },
+    { label: "Date", key: "dateCreated" }
+  ];  
 
   useEffect(() => {
     fetchAllUsers().then(setUsers).catch(console.error);
@@ -79,6 +96,7 @@ function AdminPage() {
             onChange={(e) => setUserSearch(e.target.value)}
             className={styles.search}
           />
+             
           <div className={styles.tableWrap}>
             <div className={styles.scrollArea}>
               <table className={styles.table}>
@@ -116,12 +134,22 @@ function AdminPage() {
                       </td>
                     </tr>
                   ))}
+                  
                 </tbody>
               </table>
+              
             </div>
+            
           </div>
+          <CSVLink
+            data={filteredUsers}
+            headers={userHeaders}
+            filename="users.csv"
+            className={styles.exportButton}
+          >
+            Export Users CSV
+          </CSVLink>
         </section>
-
         {/* TRANSACTIONS TABLE */}
         <section className={styles.panel}>
           <h2 className={styles.panelTitle}>Transactions</h2>
@@ -165,6 +193,14 @@ function AdminPage() {
               </table>
             </div>
           </div>
+          <CSVLink
+            data={filteredTransactions}
+            headers={transactionHeaders}
+            filename="transactions.csv"
+            className={styles.exportButton}
+          >
+            Export Transactions CSV
+          </CSVLink>
         </section>
       </div>
     </div>

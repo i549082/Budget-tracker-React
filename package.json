@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "jwt-decode": "^4.0.0"
+    "@types/react": "^18.3.27",
+    "@types/react-csv": "^1.1.10",
+    "@types/react-dom": "^18.3.7",
+    "jwt-decode": "^4.0.0",
+    "papaparse": "^5.5.3",
+    "prop-types": "^15.8.1",
+    "react-csv": "^2.2.2",
+    "react-csv-downloader": "^3.3.0"
   }
 }
