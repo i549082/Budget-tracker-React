@@ -1,10 +1,16 @@
-.transactions {
+.page {
     min-height: 100vh;
     padding: 24px;
-    padding-bottom: 0px;
 }
 
-
+/* SAME AS ADMIN GRID */
+.grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    max-width: 100%;
+    margin: 0 auto;
+}
 
 .header {
     background-color: #181818;
@@ -14,134 +20,128 @@
     display: flex;
     justify-content: center;
     max-width: 400px;
-    margin: 24px  auto;
+    margin: 24px auto;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0px 0px 10px rgb(163, 147, 147);
-    transition: border-color 0.2s ease;
-}
-
-.header:hover {
-    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .header h1 {
     color: #ffffff;
-    font-size: 2rem;
+}
+.header{
+    font: optional;
+}
+
+h3 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin: 0;
+    text-align: center;
 }
 
 .card {
     background-color: #181818;
-    text-align: center;
-    padding: 24px;
     border-radius: 40px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    max-width: 90%;
-    margin: auto;
-    margin-bottom: 24px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    transition: border-color 0.2s ease;
-}
-
-.card h3 {
-    color: #ffffff;
-    font-size: 16px;
+    gap: 16px;
+    width: 100%; /*  important */
+    margin: 0; /* remove center constraint */
+    transition: border-color 0.2s ease;       
 }
 
 .card:hover {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-
-.transactionText{
+.transactionText {
     color: #ffffff;
-    font-size: 24px;
-    margin: 10px auto;
-    text-align: right;
-    justify-content: right;
+    font-size: 18px;
+    text-align: left;
 }
 
-.dropDown{
+.dropDown,.inputFieldTransaction,.textArea {
     background-color: #181818;
-    color: #ffffff;
-    padding: 10px;
+    color: white;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 16px;
-    transition: background-color 0.4s ease;
-}
-
-.dropDown:hover{
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.inputFieldTransaction{
-    background-color: #181818;
-    color: #ffffff;
+    border: 1px solid rgba(255,255,255,.1);
     padding: 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 16px;
-    width: 100%;
-    transition: background-color 0.4s ease;
 }
 
-.inputFieldTransaction:hover{
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.textArea{
-    width: 100%;
-    padding: 12px 20px;
-    resize: none; 
+.textArea {
+    resize: none;
     height: 100px;
-    color: #ffffff;
-    padding: 12px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    background-color: #181818;
-    transition: background-color 0.4s ease;
 }
 
-.textArea:hover{
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.addButton{
-    background-color: #0a0a0a;
-    color: #ffffff;
-    padding: 18px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.addButton {
+    padding: 14px;
     border-radius: 30px;
-    font-size: 16px;
-    width: 50%;
-    margin: auto;
+    border: 1px solid rgba(255,255,255,.1);
+    background: #0a0a0a;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.1s ease;
-    box-shadow: 0px 0px 1px rgb(163, 147, 147);
+    width: 100%;
+    transition: border-color 0.2s ease; 
 }
 
-.addButton:hover{
+.addButton:hover {
     background-color: #040404;
+    border-color: rgba(255,255,255,.2);
 }
 
-.errorMessage {
-    color: #ff4d4d;
-    margin-top: 10px;
-    font-size: 14px;
-    text-align: center;
+.buttonContainer {
+    align-self: center;   /* keep it centered horizontally */
+    width: 50%; 
+    margin-top: 30px;          /* set a width for the button container */
 }
 
-.successMessage {
-    color: #4BB543;
-    margin-top: 10px;
-    font-size: 14px;
-    text-align: center;
+.errorMessage { 
+    color:#ff4d4d; }
+
+.successMessage { 
+    color:#4BB543; }
+
+.transactionsTableWrap {
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.transactionsScrollArea {
+    max-height: 520px;
+    overflow: auto;
+}
+
+.transactionsTable {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+    table-layout: fixed;
+}
+
+.transactionsTable th,.transactionsTable td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.search {
+    background: #181818;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.15);
+}
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
 }

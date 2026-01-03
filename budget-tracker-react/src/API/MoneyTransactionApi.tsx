@@ -18,6 +18,15 @@ export interface CreateTransactionResponse {
     amount: number;
 }
 
+export interface Transactions {
+  id: number;
+  transactionType: string;
+  accountType: string;
+  description: string;
+  amount: number;
+  dateCreated: string;
+}
+
 const api = ky.create({
     prefixUrl: 'http://localhost:8080/api/',
     timeout: 5000,
@@ -49,3 +58,25 @@ export async function createTransaction(transactionData: CreateTransactionReques
         throw new Error(`Failed to create transaction: ${error}`);
     }
 }
+
+export async function fetchUserTransactions(userId: number): Promise<Transactions[]> {
+    try {
+        const response = await api.get(`transactions/${userId}`);
+        const data: Transactions[] = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error(`Failed to fetch transactions: ${error}`);
+    }   
+}
+
+export async function deleteTransaction(id: number) {
+  try {
+    await api.delete(`transactions/${id}`);
+  } catch (err) {
+    console.error("Failed to delete transaction", err);
+    throw err;
+  }
+}
+
+
+
