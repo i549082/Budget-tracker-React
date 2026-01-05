@@ -2,6 +2,7 @@ import styles from './MoneyTransactions.module.css'
 import { useState, useEffect } from "react";
 import { createTransaction, deleteTransaction, type CreateTransactionRequest, fetchUserTransactions, type Transactions } from '../../API/MoneyTransactionApi.tsx';
 import { decodeToken } from '../../Auth/authUtility.tsx';
+import { CSVLink } from 'react-csv';
 
 function MoneyTransactions() {
 
@@ -16,12 +17,23 @@ function MoneyTransactions() {
   const [description, setDescription] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>(''); 
+  const [successDeleteMessage, setSuccessDeleteMessage] = useState<string>('');
   const [transactionSearch, setTransactionSearch] = useState("");
   const [transactions, setTransactions] = useState<Transactions[]>([])
 
-  const filteredTransactions = transactions.filter((t) =>
-    t.id.toString().includes(transactionSearch)
+  const filteredTransactions = transactions.filter((transaction) =>
+    transaction.id.toString().includes(transactionSearch)
   );
+
+  const userHeaders = [
+    { label: "ID", key: "id" },
+    { label: "Type", key: "transactionType" },
+    { label: "Account", key: "accountType" },
+    { label: "Amount", key: "amount" },
+    { label: "Description", key: "description" },
+    { label: "Date", key: "dateCreated" }
+
+  ];
 
   function formatDate(dateString?: string) {
     if (!dateString) return "-";
@@ -36,9 +48,7 @@ function MoneyTransactions() {
 
   useEffect(() => {
     if (!userId) return;
-    fetchUserTransactions(userId)
-      .then(setTransactions)
-      .catch(() => setErrorMessage("Failed to load transactions"));
+    fetchUserTransactions(userId).then(setTransactions).catch(() => setErrorMessage("Failed to load transactions"));
   }, [userId]);
 
   const handleSubmit = async () => {
@@ -76,10 +86,25 @@ function MoneyTransactions() {
       setSuccessMessage(`Transaction added successfully with ID: ${response.id}`);
       setDescription('');
       setAmount('');
+      await fetchUserTransactions(userId).then(setTransactions).catch(() => setErrorMessage("Failed to load transactions"));
     } catch {
       setErrorMessage(`Failed to add transaction`);
     }
   };
+
+
+  const handleDeleteTransaction = async (transactionId: number) => {
+    try {
+      await deleteTransaction(transactionId);
+
+      setSuccessDeleteMessage(`Transaction deleted successfully with ID: ${transactionId}`);
+      await fetchUserTransactions(userId).then(setTransactions).catch(() => setErrorMessage("Failed to load transactions"));
+    } catch {
+      setErrorMessage(`Failed to delete transaction`);
+    }
+  };
+
+
 
   return (
     <div className={styles.page}>
@@ -155,6 +180,7 @@ function MoneyTransactions() {
                     <th>Amount</th>
                     <th>Description</th>
                     <th>Date</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
 
@@ -169,19 +195,31 @@ function MoneyTransactions() {
                       <td>{transaction.description}</td>
                       <td>{formatDate(transaction.dateCreated)}</td>
                       <td>
-                        <button onClick={() => deleteTransaction(transaction.id)}>
+                        <button className={styles.addButton} onClick={() => handleDeleteTransaction(transaction.id)}>
                             Delete
                         </button>
+                        
                         </td>
+                        
                     </tr>
                   ))}
                 </tbody>
-
               </table>
             </div>
           </div>
+          {filteredTransactions.length > 0 && 
+          (
+            <CSVLink
+              data={filteredTransactions}
+              headers={userHeaders}
+              filename="user_transactions.csv"
+              className={styles.exportButton}
+            >
+              Export Users CSV
+            </CSVLink>
+          )}
+          {successDeleteMessage && <p className={styles.successMessage}>{successDeleteMessage}</p>}
         </section>
-
       </div>
     </div>
   );

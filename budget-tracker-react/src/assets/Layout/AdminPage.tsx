@@ -68,14 +68,14 @@ function AdminPage() {
   }).format(new Date(dateString));
 }
 
-    const filteredUsers = users.filter((u) =>
-      u.username.toLowerCase().includes(userSearch.toLowerCase()) ||
-      u.id.toString().includes(userSearch)
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(userSearch.toLowerCase()) ||
+      user.id.toString().includes(userSearch)
     );
 
-    const filteredTransactions = transactions.filter((t) =>
-      t.username.toLowerCase().includes(transactionSearch.toLowerCase()) ||
-      t.id.toString().includes(transactionSearch)
+    const filteredTransactions = transactions.filter((transaction) =>
+      transaction.username.toLowerCase().includes(transactionSearch.toLowerCase()) ||
+      transaction.id.toString().includes(transactionSearch)
     );
 
   return (
@@ -134,12 +134,9 @@ function AdminPage() {
                       </td>
                     </tr>
                   ))}
-                  
                 </tbody>
               </table>
-              
             </div>
-            
           </div>
           <CSVLink
             data={filteredUsers}
