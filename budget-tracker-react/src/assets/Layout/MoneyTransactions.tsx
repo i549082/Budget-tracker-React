@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 import { createTransaction, deleteTransaction, type CreateTransactionRequest, fetchUserTransactions, type Transactions } from '../../API/MoneyTransactionApi.tsx';
 import { decodeToken } from '../../Auth/authUtility.tsx';
 import { CSVLink } from 'react-csv';
+import { getUserBalance } from '../../API/PersonApi.tsx';
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend } from "chart.js";
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 function MoneyTransactions() {
 
@@ -20,10 +24,9 @@ function MoneyTransactions() {
   const [successDeleteMessage, setSuccessDeleteMessage] = useState<string>('');
   const [transactionSearch, setTransactionSearch] = useState("");
   const [transactions, setTransactions] = useState<Transactions[]>([])
-
-  const filteredTransactions = transactions.filter((transaction) =>
-    transaction.id.toString().includes(transactionSearch)
-  );
+  const [filterType, setFilterType] = useState<string>("ALL");
+  const [filterAccount, setFilterAccount] = useState<string>("ALL");
+  const [balance, setBalance] = useState<number | null>(null);
 
   const userHeaders = [
     { label: "ID", key: "id" },
@@ -49,7 +52,19 @@ function MoneyTransactions() {
   useEffect(() => {
     if (!userId) return;
     fetchUserTransactions(userId).then(setTransactions).catch(() => setErrorMessage("Failed to load transactions"));
+    getUserBalance(userId).then(setBalance).catch(() => setErrorMessage("Failed to load balance"));
   }, [userId]);
+
+  
+  const filteredTransactions = transactions.filter((transaction) => {
+    const matchesSearch = transaction.id.toString().includes(transactionSearch);
+
+    const matchesType = filterType === "ALL" || transaction.transactionType === filterType;
+
+    const matchesAccount = filterAccount === "ALL" || transaction.accountType === filterAccount;
+
+  return matchesSearch && matchesType && matchesAccount;
+});
 
   const handleSubmit = async () => {
     setErrorMessage('');
@@ -104,6 +119,29 @@ function MoneyTransactions() {
     }
   };
 
+  let startingBalance = 0;
+
+  const balancePoints = filteredTransactions.map(transaction => {
+    if (transaction.transactionType === "INCOME") startingBalance += transaction.amount;
+    if (transaction.transactionType === "EXPENSE") startingBalance -= transaction.amount;
+    return startingBalance;
+  });
+
+
+  const chartData = {
+  labels: filteredTransactions.map(transaction =>
+    `${formatDate(transaction.dateCreated)} (${transaction.transactionType})`
+  ),
+  datasets: [
+    {
+      label: "Transaction Amount",
+      data: balancePoints,
+      borderColor: "#ffffffff",
+      backgroundColor: "rgba(75, 181, 67, 0.2)",
+      tension: 0.2,
+    }
+  ]
+};
 
 
   return (
@@ -115,10 +153,7 @@ function MoneyTransactions() {
 
         {/* LEFT — FORM */}
         <section className={styles.card}>
-        
-        
           <h3>Add transaction</h3>
-
           <p className={styles.transactionText}>Account Type</p>
           <select value={accountType} onChange={(e) => setAccountType(e.target.value)} className={styles.dropDown}>
             <option value="BANK">Bank</option>
@@ -168,6 +203,36 @@ function MoneyTransactions() {
             onChange={(e) => setTransactionSearch(e.target.value)}
             className={styles.search}
           />
+          <div className={styles.filtersRow}>
+
+          <div>
+            <label>Type:</label>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className={styles.dropDown}
+            >
+              <option value="ALL">All</option>
+              <option value="INCOME">Income</option>
+              <option value="EXPENSE">Expense</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Account:</label>
+            <select
+              value={filterAccount}
+              onChange={(e) => setFilterAccount(e.target.value)}
+              className={styles.dropDown}
+            >
+              <option value="ALL">All</option>
+              <option value="BANK">Bank</option>
+              <option value="CASH">Cash</option>
+            </select>
+          </div>
+
+        </div>
+
 
           <div className={styles.transactionsTableWrap}>
             <div className={styles.transactionsScrollArea}>
@@ -221,6 +286,12 @@ function MoneyTransactions() {
           {successDeleteMessage && <p className={styles.successMessage}>{successDeleteMessage}</p>}
         </section>
       </div>
+      <section className={styles.chartCard}>
+        <h3>Transactions Over Time</h3>
+          <Line data={chartData} />
+           <p className={styles.balanceText}>Current Balance: <span>${balance}</span></p>
+      </section>
+
     </div>
   );
 }

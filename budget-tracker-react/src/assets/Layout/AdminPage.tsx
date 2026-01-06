@@ -169,7 +169,6 @@ function AdminPage() {
                     <th>Account</th>
                     <th>Amount</th>
                     <th>Description</th>
-                    {/* show this only if backend returns it */}
                     <th>Date</th>
                   </tr>
                 </thead>
