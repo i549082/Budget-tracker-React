@@ -5,6 +5,11 @@ on:
     workflows: ["React CI"]
     types:
       - completed
+    
+permissions:
+        actions: read  # Required for workflow_run to work
+        contents: read
+
 
 jobs:
   deploy:
@@ -16,7 +21,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
