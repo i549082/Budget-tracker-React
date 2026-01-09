@@ -9,19 +9,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
 
     steps:
-      - name: Download code repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: './budget-tracker-react/package-lock.json'
 
       - name: Build frontend Docker image
         run: docker build -t budgettracker-frontend:latest ./budget-tracker-react
-# c
