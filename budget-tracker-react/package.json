@@ -11,16 +11,22 @@
   },
   "dependencies": {
     "chart.js": "^4.5.1",
+    "jwt-decode": "^4.0.0",
     "ky": "^1.13.0",
+    "prop-types": "^15.8.1",
     "react": "^19.1.1",
     "react-chartjs-2": "^5.3.1",
+    "react-csv": "^2.2.2",
+    "react-csv-downloader": "^3.3.0",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/jwt-decode": "^2.2.1",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
+    "@types/react-csv": "^1.1.10",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
     "eslint": "^9.36.0",

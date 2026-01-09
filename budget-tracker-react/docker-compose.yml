@@ -1,0 +1,6 @@
+services:
+  frontend:
+    image: budgettracker-frontend
+    container_name: budgettracker-frontend
+    ports:
+      - "3000:80"

@@ -21,9 +21,6 @@ jobs:
           node-version: '22'
           cache: 'npm'
           cache-dependency-path: './budget-tracker-react/package-lock.json'
-          
-      - name: Install and build
-        working-directory: ./budget-tracker-react
-        run: |
-          npm ci
-          npm run build
+
+      - name: Build frontend Docker image
+        run: docker build -t budgettracker-frontend:latest ./budget-tracker-react
