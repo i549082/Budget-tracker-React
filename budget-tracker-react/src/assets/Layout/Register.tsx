@@ -61,7 +61,7 @@ function Register() {
           onChange={e => setPassword(e.target.value)}
         />
 
-        <button className={styles.button} onClick={handleRegister}>
+        <button data-cy="register-submit" className={styles.button} onClick={handleRegister}>
           Register
         </button>
 
