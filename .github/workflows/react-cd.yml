@@ -16,6 +16,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: ./budget-tracker-react/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./budget-tracker-react
+        run: npm ci
+
+      - name: Build project
+        working-directory: ./budget-tracker-react
+        run: npm run build  
 
       - name: Build frontend Docker image
         run: docker build -t budgettracker-frontend:latest ./budget-tracker-react
